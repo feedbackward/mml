@@ -9,6 +9,7 @@ import tables
 ## Internal modules.
 from mml.config import dir_data_toread
 from mml.config import dir_data_towrite
+from mml.utils import makedir_safe
 
 
 ###############################################################################
