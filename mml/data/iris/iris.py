@@ -21,7 +21,6 @@ data_name = "iris"
 
 toread = os.path.join(dir_data_toread, data_name, "iris.data")
 newdir = os.path.join(dir_data_towrite, data_name)
-makedir_safe(newdir)
 towrite = os.path.join(newdir, "iris.h5")
 
 label_dict = {"Iris-setosa": 0,
@@ -71,6 +70,7 @@ def raw_to_h5():
             i += 1
 
         ## Create and populate the HDF5 file.
+        makedir_safe(newdir)
         with tables.open_file(towrite, mode="w", title=title) as myh5:
             myh5.create_array(where=myh5.root,
                               name="X",

@@ -25,7 +25,6 @@ def get_toread_tr(num):
 toread_te = os.path.join(dir_data_toread,
                           data_name, "test_batch.bin")
 newdir = os.path.join(dir_data_towrite, data_name)
-makedir_safe(newdir)
 towrite = os.path.join(newdir, "cifar10.h5")
 
 n_tr_perbatch = 10000
@@ -109,6 +108,7 @@ def raw_to_h5():
     y_raw = np.vstack((y_raw_tr, y_raw_te))
     
     ## Create and populate the HDF5 file.
+    makedir_safe(newdir)
     with tables.open_file(towrite, mode="w", title=title) as myh5:
         myh5.create_array(where=myh5.root,
                           name="X",

@@ -20,7 +20,8 @@ data_name = "cod_rna"
 
 toread_tr = os.path.join(dir_data_toread, data_name, "cod-rna")
 toread_te = os.path.join(dir_data_toread, data_name, "cod-rna.t")
-towrite = os.path.join(dir_data_towrite, data_name, "cod_rna.h5")
+newdir = os.path.join(dir_data_towrite, data_name)
+towrite = os.path.join(newdir, "cod_rna.h5")
 
 attribute_names = ["dynalign", "shortlen", "freqA1", "freqU1", "freqC1",
                    "freqA2", "freqU2", "freqC2"] # order is important.
@@ -165,6 +166,7 @@ def raw_to_h5():
     y_raw = np.vstack((y_raw_tr, y_raw_te))
     
     ## Create and populate the HDF5 file.
+    makedir_safe(newdir)
     with tables.open_file(towrite, mode="w", title=title) as myh5:
         myh5.create_array(where=myh5.root,
                           name="X",

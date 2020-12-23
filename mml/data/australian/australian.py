@@ -21,7 +21,6 @@ data_name = "australian"
 
 toread = os.path.join(dir_data_toread, data_name, "australian.dat")
 newdir = os.path.join(dir_data_towrite, data_name)
-makedir_safe(newdir)
 towrite = os.path.join(newdir, "australian.h5")
 
 attribute_names = ["A"+str(i+1) for i in range(14)] # order is important.
@@ -136,6 +135,7 @@ def raw_to_h5():
         
 
     ## Create and populate the HDF5 file.
+    makedir_safe(newdir)
     with tables.open_file(towrite, mode="w", title=title) as myh5:
         myh5.create_array(where=myh5.root,
                           name="X",
