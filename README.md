@@ -11,7 +11,7 @@ Content of this readme document:
 - <a href="#start">Getting started</a>
 - <a href="#content_overview">Overview of repository contents</a>
 
-Any questions should be sent to the repository owner.
+If you have any feedback or questions, please contact the repository owner.
 
 
 <a id="start"></a>
