@@ -43,6 +43,8 @@ That is, we `clone` both the base and project-local software repositories, creat
 
 Here we give an overview of the main contents of this repository. We do not list every file, but we cover all the key components.
 
+- `algos/`: algorithm class definitions.
+
 - `config.py`: main configuration file.
 
 - `data/`: all the sub-directories of `data` correspond to one and only one dataset. Each includes scripts for acquiring raw data and converting the raw data into a standardized HDF5 format.
@@ -60,14 +62,21 @@ Here we give an overview of the main contents of this repository. We do not list
   - `mnist/`: MNIST handwritten digits.
   - `protein/`: protein homology dataset.
 
+- `losses/`: loss class definitions.
+
+- `models/`: model class definitions.
+
 - `utils/`
 
   - `__init__.py`: houses a variety of helper functions, mostly of a clerical nature.
   - `linalg.py`: almost all helper functions related to array manipulation.
   - `mest.py`: various helper functions related to M-estimation.
+  - `rgen.py`: random data generation based on `Generator` objects supported by Numpy 1.17 and onward.
   - `vecmean.py`: a collection of vector mean estimation routines.
 
 
 We also have some extra materials stored in other markdown files:
 
-- `refs_mest.md`: a simple bibliography of references cited in `mest.py`.
+- `refs_mest.md`: a simple bibliography of references cited in `utils/mest.py`.
+- `refs_rgen.md`: a concise list of numpy and scipy references relevant to the data-generating and statistic-producing functions implemented in `utils/rgen.py`.
+
