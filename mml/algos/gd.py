@@ -26,7 +26,8 @@ class GD_ERM(LineSearch):
 
     
     def newdir(self, X=X, y=y):
-        return -np.mean(self.model.grad(X=X, y=y),
+        return -np.mean(self.loss.grad(model=self.model,
+                                       X=X, y=y),
                         axis=0, keepdims=True)
 
 

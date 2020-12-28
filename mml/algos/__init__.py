@@ -52,12 +52,13 @@ class Algorithm:
         raise NotImplementedError
 
 
-    def check(self):
+    def check(self, cond=False):
         '''
         A generic function that checks to see
         if the algorithm should stop.
         '''
-        raise NotImplementedError
+        self.stop = cond
+        return None
 
 
 ###############################################################################
