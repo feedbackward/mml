@@ -21,15 +21,15 @@ class LinearRegression(Model):
         return None
     
     
-    def func(self, w, X):
+    def func(self, w=None, X=None):
         return np.matmul(X,w)
     
     
-    def grad(self, w, X):
+    def grad(self, w=None, X=None):
         return X
     
     
-    def hess(self, w, X):
+    def hess(self, w=None, X=None):
         n, d = X.shape
         return np.zeros((d,d,n), dtype=w.dtype)
     

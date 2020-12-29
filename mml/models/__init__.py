@@ -34,7 +34,7 @@ class Model:
         return self.func(w=self.w, X=X)
 
 
-    def func(self, w=self.w, X=None):
+    def func(self, w=None, X=None):
         '''
         Execute the model on given inputs.
         (implemented in child classes)
@@ -42,7 +42,7 @@ class Model:
         raise NotImplementedError
 
     
-    def grad(self, w=self.w, X=None):
+    def grad(self, w=None, X=None):
         '''
         When applicable, compute the gradient with
         respect to parameter w.
@@ -51,7 +51,7 @@ class Model:
         raise NotImplementedError
 
     
-    def hess(self, w=self.w, X=None):
+    def hess(self, w=None, X=None):
         '''
         When applicable, compute the Hessian with
         respect to parameter w.
