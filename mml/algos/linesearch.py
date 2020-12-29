@@ -40,8 +40,13 @@ class LineSearch(Algorithm):
 
     def update(self, X=None, y=None):
         update_dir = self.newdir(X=X, y=y)
+        if self.w.size != update_dir.size:
+            raise RuntimeError("Update direction size doesn't match w.")
+        else:
+            update_dir = update_dir.reshape(self.w.shape)
         update_step = self.stepsize(newdir=update_dir, X=X, y=y)
-        self.w = self.w + update_step*update_dir
+        self.w += update_step*update_dir
+        return None
 
 
 ###############################################################################

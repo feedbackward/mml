@@ -1,8 +1,5 @@
 '''Algorithms: batch gradient descent variants.'''
 
-## External modules.
-import numpy as np
-
 ## Internal modules.
 from mml.algos.linesearch import LineSearch
 
@@ -26,9 +23,8 @@ class GD_ERM(LineSearch):
 
     
     def newdir(self, X=None, y=None):
-        return -np.mean(self.loss.grad(model=self.model,
-                                       X=X, y=y),
-                        axis=0, keepdims=True)
+        return -self.loss.grad(model=self.model,
+                               X=X, y=y).mean(axis=0, keepdims=True)
 
 
     def stepsize(self, newdir=None, X=None, y=None):

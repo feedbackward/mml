@@ -9,20 +9,26 @@ class Model:
     Model objects represent collections of parametrized
     functions. Each function takes some "inputs" (denoted X),
     and is determined by a "parameter" (denoted w).
-    
-    The attribute self.w (if not None) is the "state" of
-    the Model object, and it represents a particular choice
-    of candidate from the hypothesis class implicitly
-    represented by the Model object.
+    This parameter is the "state" of the Model object, and
+    it represents a particular choice of candidate from the
+    hypothesis class implicitly represented by the Model object.
     '''
     
     def __init__(self, w_init=None, name=None):
-        self.w = w
+        self._w = w_init
         if name is None:
             self.name = self.__class__.__name__
         else:
             self.name = name
         return None
+
+    @property
+    def w(self):
+        return self._w
+
+    @w.setter
+    def w(self, w_new):
+        self._w = w_new
     
     
     def __str__(self):
@@ -31,7 +37,7 @@ class Model:
 
 
     def __call__(self, X=None):
-        return self.func(w=self.w, X=X)
+        return self.func(w=self._w, X=X)
 
 
     def func(self, w=None, X=None):

@@ -22,7 +22,10 @@ class LinearRegression(Model):
     
     
     def func(self, w=None, X=None):
-        return np.matmul(X,w)
+        if w is None:
+            return np.matmul(X,self._w)
+        else:
+            return np.matmul(X,w)
     
     
     def grad(self, w=None, X=None):

@@ -31,12 +31,12 @@ class Algorithm:
 
 
     def __iter__(self):
-        self.counter = 0
         return self
 
 
     def __next__(self):
         if self.stop:
+            self.stop = False # Reset for future loops.
             raise StopIteration
         else:
             return None
