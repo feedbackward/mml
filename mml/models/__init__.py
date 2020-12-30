@@ -12,6 +12,9 @@ class Model:
     This parameter is the "state" of the Model object, and
     it represents a particular choice of candidate from the
     hypothesis class implicitly represented by the Model object.
+
+    Handy reference for getters/setters:
+    https://stackoverflow.com/a/15930977
     '''
     
     def __init__(self, w_init=None, name=None):
