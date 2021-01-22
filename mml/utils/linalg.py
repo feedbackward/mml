@@ -57,4 +57,17 @@ def pwd_fast(A, B):
     return np.sqrt(out)
 
 
+def onehot(y, num_classes):
+    '''
+    Assumes y is (n,1) shaped array of labels
+    taking values between 0 and (num_classes-1).
+    
+    Note: using reshape(-1) is the recommended way
+    to flatten and get a view as often as possible.
+    (Ref: numpy.ravel documentation)
+    '''
+    return np.eye(num_classes, dtype=y.dtype)[y.reshape(-1)]
+
+
+
 ###############################################################################

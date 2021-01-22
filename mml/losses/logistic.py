@@ -1,5 +1,8 @@
 '''Losses: logistic loss.'''
 
+## External modules.
+import numpy as np
+
 ## Internal modules.
 from mml.losses import Loss
 
