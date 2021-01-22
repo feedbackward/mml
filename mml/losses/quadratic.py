@@ -15,7 +15,7 @@ class Quadratic(Loss):
 
     
     def func(self, model, X, y):
-        return (model(X=X)-y)**2 / 2
+        return (model(X=X)-y)**2 / 2.0
 
 
     def grad(self, model, X, y):
