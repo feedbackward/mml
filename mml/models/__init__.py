@@ -69,4 +69,8 @@ class Model:
         raise NotImplementedError
 
 
+## Range for default (random) parameter initialization.
+init_range = 0.05
+
+
 ###############################################################################
