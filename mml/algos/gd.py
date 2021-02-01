@@ -24,7 +24,7 @@ class GD_ERM(LineSearch):
     
     def newdir(self, X=None, y=None):
         return -self.loss.grad(model=self.model,
-                               X=X, y=y).mean(axis=0, keepdims=True)
+                               X=X, y=y).mean(axis=0, keepdims=False)
 
 
     def stepsize(self, newdir=None, X=None, y=None):
