@@ -32,7 +32,7 @@ class Zero_One(Loss):
                        num_classes=num_classes)
 
         ## Compare with true one-hot labels.
-        return abs(y_hat-y).sum(axis=1, keepdims=True)
+        return (y_hat != y).any(axis=1, keepdims=True).astype(int)
         
 
 ###############################################################################
