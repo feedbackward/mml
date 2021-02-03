@@ -28,7 +28,7 @@ As mentioned above, this is "base" code, intended to be used in a cohesive manne
 ```
 $ git clone https://github.com/feedbackward/[project name].git
 $ git clone https://github.com/feedbackward/mml.git
-$ conda create -n [project name] python=3.8 jupyter matplotlib pip pytables scipy
+$ conda create -n [project name] python=3.8 jupyter matplotlib pip pytables scipy unzip
 $ conda activate [project name]
 $ ([project name]) cd mml
 $ ([project name]) git checkout [SHA-1]

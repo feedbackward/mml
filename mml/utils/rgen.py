@@ -60,7 +60,6 @@ def get_stats(name, **kwargs):
         raise ValueError("Please provide a proper distribution name.")
 
     return {"mean": mean, "var": var}
-    
 
 
 ###############################################################################
