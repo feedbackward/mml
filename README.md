@@ -30,9 +30,9 @@ $ git clone https://github.com/feedbackward/[project name].git
 $ git clone https://github.com/feedbackward/mml.git
 $ conda create -n [project name] python=3.8 jupyter matplotlib pip pytables scipy unzip
 $ conda activate [project name]
-$ ([project name]) cd mml
-$ ([project name]) git checkout [SHA-1]
-$ ([project name]) pip install -e ./
+([project name]) $ cd mml
+([project name]) $ git checkout [SHA-1]
+([project name]) $ pip install -e ./
 ```
 
 That is, we `clone` both the base and project-local software repositories, create a project-specific environment with standard software, and then install `mml` for easy importing by project repositories. The `[SHA-1]` part refers to a specific SHA-1 hash value associated with a particular `git` commit. Depending on the project, the `git checkout` line may be unnecessary; it will be used to ensure that even as `mml` gets updated, the project specific code uses a version of `mml` that it works with. The option `-e` installs the package in edit mode, so that changes made locally are reflected immediately, without the need to re-install.
