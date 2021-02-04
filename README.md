@@ -17,7 +17,12 @@ If you have any feedback or questions, please contact the repository owner.
 <a id="start"></a>
 ## Getting started
 
-It is assumed that the user has access to a `bash` shell, can use `wget` to download data sets, has `git` and `conda` installed, and has run the following command before starting:
+We assume the following about the user's environment:
+- has access to a `bash` shell
+- can use `wget` to download data sets
+- has `unzip`, `git`, and `conda` installed
+
+and finally that they have run
 
 ```
 $ conda update -n base conda
