@@ -8,7 +8,12 @@
 - `normal`:
   - Use `Generator.normal` and `stats.norm`.
   - Specify with `loc` and `scale`.
-  - Refs: <a href="https://numpy.org/doc/1.19/reference/random/generated/numpy.random.Generator.normal.html">numpy</a>, <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.norm.html">scipy</a>.
+  - Refs: <a href="https://numpy.org/doc/stable/reference/random/generated/numpy.random.Generator.normal.html">numpy</a>, <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.norm.html">scipy</a>.
+
+- `pareto`:
+  - Use `Generator.pareto` and `stats.pareto`.
+  - Specify with `shape` and `scale`.
+  - Refs: <a href="https://numpy.org/doc/stable/reference/random/generated/numpy.random.Generator.pareto.html">numpy</a>, <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.pareto.html">scipy</a>.
 
 
 

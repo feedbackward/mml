@@ -2,7 +2,7 @@
 
 ## External modules.
 import numpy as np
-from scipy.stats import lognorm, norm
+from scipy.stats import lognorm, norm, pareto
 
 
 ###############################################################################
@@ -27,6 +27,9 @@ def get_generator(name, rg=np.random.default_rng(), **kwargs):
         gen = lambda n : rg.normal(loc=kwargs["loc"],
                                    scale=kwargs["scale"],
                                    size=n)
+    elif name == "pareto":
+        gen = lambda n : (1.0+rg.pareto(a=kwargs["shape"],
+                                        size=n))*kwargs["scale"]
     else:
         raise ValueError("Please provide a proper distribution name.")
 
@@ -56,6 +59,10 @@ def get_stats(name, **kwargs):
         mean, var = norm.stats(loc=kwargs["loc"],
                                scale=kwargs["scale"],
                                moments=_sp)
+    elif name == "pareto":
+        mean, var = pareto.stats(b=kwargs["shape"],
+                                 scale=kwargs["scale"],
+                                 moments=_sp)
     else:
         raise ValueError("Please provide a proper distribution name.")
 
