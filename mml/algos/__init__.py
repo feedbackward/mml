@@ -26,6 +26,9 @@ class Algorithm:
 
 
     def __str__(self):
+        '''
+        For printing out the relevant algorithm name.
+        '''
         out = "Algorithm name: {}".format(self.name)
         return out
 

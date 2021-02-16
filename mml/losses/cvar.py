@@ -16,66 +16,61 @@ class CVaR(Loss):
     object upon construction, and uses that to
     make a conditional value at risk (CVaR) type
     of loss.
+    - loss_base: the base loss object.
+    - alpha: a value between 0 and 1, here this means
+      conditioning on exceeding the (1.0-alpha) quantile.
     '''
     
-    def __init__(self, loss_base, quantile, name=None):
+    def __init__(self, loss_base, alpha, name=None):
         loss_name = "CVaR x {}".format(str(base_loss))
         super().__init__(name=loss_name)
         self.loss = loss_base
-        self.quantile = quantile
+        self.alpha = alpha
         return None
 
     
-    def func(self, model, X, y, v=0.0):
+    def func(self, model, X, y):
         '''
-        Outputs the "CVaR loss" of the same shape as the
-        base loss being used.
         '''
-        return v + (1./self.quantile) * np.clip(
+        v = model.paras["v"]
+        return v + (1./self.alpha) * np.clip(
             a=self.loss(model=model, X=X, y=y)-v,
             a_min=0.0,
             a_max=None
         )
     
     
-    def grad(self, model, X, y, v=0.0):
+    def grad(self, model, X, y):
         '''
-        Returns a tuple of sub-gradient arrays.
-        One is the array for the sub-gradient taken
-        with respect to the main parameter of interest,
-        i.e., the "state" of the model.
-        The other is "v" here, namely the CVaR shift
-        parameter (a scalar).
         '''
 
         ## Initial computations.
-        g_w = self.loss.grad(model=model, X=X, y=y)
-        
+        loss_grads = self.loss.grad(model=model, X=X, y=y)
+        v = model.paras["v"]
         l_check = np.clip(a=np.sign(self.loss(model=model, X=X, y=y)-v),
                           a_min=0.0,
                           a_max=None)
-
-        ## Check dimensions.
         ldim = l_check.ndim
-        gdim = g_w.ndim
 
-        ## Sub-gradient with respect to main parameters.
-        if ldim > gdim:
-            raise ValueError("Axis dimensions are wrong; ldim > gdim.")
-        elif ldim < gdim:
-            l_check_exp = np.expand_dims(
-                a=l_check,
-                axis=tuple(i for i in range(ldim,gdim))
-            )
-            g_w *= l_check_exp/self.quantile
-        else:
-            g_w *= l_check/self.quantile
+        ## Main sub-gradient computations.
+        for pn, g in loss_grads.items():
+            gdim = g.ndim
+            if ldim > gdim:
+                raise ValueError("Axis dimensions are wrong; ldim > gdim.")
+            elif ldim < gdim:
+                l_check_exp = np.expand_dims(
+                    a=l_check,
+                    axis=tuple(i for i in range(ldim,gdim))
+                )
+                g *= l_check_exp / self.alpha
+            else:
+                g *= l_check / self.alpha
 
-        ## Sub-gradient with respect to CVaR shift parameter.
-        g_v = np.where(l_check>0.0, 1.0-1.0/self.quantile, 1.0)
-
-        ## Return a tuple of the two sub-gradient arrays.
-        return (g_w, g_v)
+        ## Finally, sub-gradient with respect to CVaR shift parameter.
+        loss_grads["v"] = np.where(l_check>0.0, 1.0-1.0/self.alpha, 1.0)
+        
+        ## Return gradients for all relevant parameters.
+        return loss_grads
 
         
 ###############################################################################

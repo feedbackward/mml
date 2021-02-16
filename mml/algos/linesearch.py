@@ -37,24 +37,24 @@ class LineSearch(Algorithm):
         
 
     def update(self, X=None, y=None):
-        
-        update_dir = self.newdir(X=X, y=y)
+
+        newdirs = self.newdir(X=X, y=y)
         update_step = self.stepsize(newdir=update_dir, X=X, y=y)
         
-        for pname, p in self.paras.items():
+        for pn, p in self.paras.items():
             
             ## Shape check.
             shape_old = p.shape
-            shape_new = update_dir[pname].shape
+            shape_new = newdirs[pn].shape
             
             if shape_old != shape_new:
                 s_err = "Shapes don't match. {}: {} vs. {}.".format(
-                    pname, shape_old, shape_new
+                    pn, shape_old, shape_new
                 )
                 raise RuntimeError(s_err)
             
             ## Assuming shapes match, do additive update.
-            p += update_step[pname] * update_dir[pname]
+            p += update_step[pname] * newdirs[pn]
 
         return None
 

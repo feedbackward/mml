@@ -26,11 +26,17 @@ class Loss:
     
     
     def __str__(self):
+        '''
+        For printing out the relevant loss name.
+        '''
         out = "Loss name: {}".format(self.name)
         return out
     
     
     def __call__(self, model=None, X=None, y=None):
+        '''
+        Lets us compute loss values as loss(model,X,y).
+        '''
         return self.func(model=model, X=X, y=y)
     
     

@@ -53,8 +53,12 @@ class Logistic(Loss):
 
         ## Change from (n, num_classes) to (n, 1, num_classes).
         D_exp = np.expand_dims(D, axis=1) # enables broadcasting.
-        
-        return D_exp*model.grad(X=X)
+
+        ## Final computations.
+        loss_grads = model.grad(X=X)
+        for pn, g in loss_grads.items():
+            g *= D_exp
+        return loss_grads
 
 
 ###############################################################################

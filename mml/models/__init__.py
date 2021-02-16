@@ -43,21 +43,27 @@ class Model:
         or one can do it one element at a time,
         e.g., something like
         >> model.paras["key"] = value
-        can be done.
+        can be done as desired.
         '''
         self._paras = paras_new
     
     
     def __str__(self):
+        '''
+        For printing out the relevant model name.
+        '''
         out = "Model name: {}".format(self.name)
         return out
 
 
     def __call__(self, X=None):
-        return self.func(w=self._w, X=X)
+        '''
+        Lets us compute model outputs as model(X).
+        '''
+        return self.func(paras=self._paras, X=X)
 
 
-    def func(self, w=None, X=None):
+    def func(self, paras=None, X=None):
         '''
         Execute the model on given inputs.
         (implemented in child classes)
@@ -65,19 +71,19 @@ class Model:
         raise NotImplementedError
 
     
-    def grad(self, w=None, X=None):
+    def grad(self, paras=None, X=None):
         '''
         When applicable, compute the gradient with
-        respect to parameter w.
+        respect to the relevant parameters.
         (implemented in child classes)
         '''
         raise NotImplementedError
 
     
-    def hess(self, w=None, X=None):
+    def hess(self, paras=None, X=None):
         '''
         When applicable, compute the Hessian with
-        respect to parameter w.
+        respect to the relevant parameters.
         (implemented in child classes)
         '''
         raise NotImplementedError
