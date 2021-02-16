@@ -27,17 +27,21 @@ def para_shape_check(paras, shapes):
     if paras is None or shapes is None:
         raise ValueError("Both paras and shapes cannot be None.")
 
-    for pn, p in paras.items():
-
+    for pn in shapes.keys():
+        
         try:
+            p = paras[pn]
             if p.shape != shapes[pn]:
                 raise ValueError(
                     "Shape of {} is {}; should be {}.".format(
                         pn, p.shape, shapes[pn]
                     )
                 )
+            else:
+                continue
+        
         except KeyError:
-            print("Parameter {} doesn't match any shape names.".format(pn))
+            print("Parameter {} wasn't provided.".format(pn))
     
     return None
 

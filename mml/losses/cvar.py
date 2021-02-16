@@ -53,6 +53,9 @@ class CVaR(Loss):
         ldim = l_check.ndim
 
         ## Main sub-gradient computations.
+        ## Note: since "v" isn't part of model grad calcs,
+        ##       we never need to worry about "v" getting
+        ##       mixed into the loop below.
         for pn, g in loss_grads.items():
             gdim = g.ndim
             if ldim > gdim:
@@ -65,11 +68,11 @@ class CVaR(Loss):
                 g *= l_check_exp / self.alpha
             else:
                 g *= l_check / self.alpha
-
+        
         ## Finally, sub-gradient with respect to CVaR shift parameter.
         loss_grads["v"] = np.where(l_check>0.0, 1.0-1.0/self.alpha, 1.0)
         
-        ## Return gradients for all relevant parameters.
+        ## Return gradients for all parameters being optimized.
         return loss_grads
 
         

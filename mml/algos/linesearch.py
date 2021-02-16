@@ -27,7 +27,7 @@ class LineSearch(Algorithm):
         raise NotImplementedError
 
 
-    def stepsize(self, newdir=None, X=None, y=None):
+    def stepsize(self, newdirs=None, X=None, y=None):
         '''
         Computing a step size, given an
         update direction.
@@ -39,7 +39,7 @@ class LineSearch(Algorithm):
     def update(self, X=None, y=None):
 
         newdirs = self.newdir(X=X, y=y)
-        update_step = self.stepsize(newdir=update_dir, X=X, y=y)
+        update_step = self.stepsize(newdirs=newdirs, X=X, y=y)
         
         for pn, p in self.paras.items():
             
@@ -54,7 +54,7 @@ class LineSearch(Algorithm):
                 raise RuntimeError(s_err)
             
             ## Assuming shapes match, do additive update.
-            p += update_step[pname] * newdirs[pn]
+            p += update_step[pn] * newdirs[pn]
 
         return None
 

@@ -1,6 +1,7 @@
 '''Losses: logistic loss.'''
 
 ## External modules.
+from copy import deepcopy
 import numpy as np
 
 ## Internal modules.
@@ -53,11 +54,21 @@ class Logistic(Loss):
 
         ## Change from (n, num_classes) to (n, 1, num_classes).
         D_exp = np.expand_dims(D, axis=1) # enables broadcasting.
-
+        
         ## Final computations.
-        loss_grads = model.grad(X=X)
+        loss_grads = deepcopy(model.grad(X=X))
         for pn, g in loss_grads.items():
-            g *= D_exp
+
+            ## Before updating, do a shape check to be safe.
+            if g.ndim != D_exp.ndim:
+                raise ValueError("g.ndim != D_exp.ndim.")
+            elif g.shape[0] != len(D_exp):
+                raise ValueError("g.shape[0] != len(D_exp).")
+            elif g.shape[2] != D_exp.shape[2]:
+                raise ValueError("g.shape[2] != D_exp.shape[2].")
+            else:
+                g *= D_exp
+
         return loss_grads
 
 

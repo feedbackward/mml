@@ -30,7 +30,7 @@ class GD_ERM(LineSearch):
         return newdirs
 
 
-    def stepsize(self, newdir=None, X=None, y=None):
+    def stepsize(self, newdirs=None, X=None, y=None):
         '''
         Just return the pre-fixed step sizes.
         '''

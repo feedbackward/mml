@@ -48,7 +48,7 @@ class LinearRegression(Model):
     
     def grad(self, paras=None, X=None):
         model_grads = {}
-        model_grads["w"] = X
+        model_grads["w"] = X # a view.
         return model_grads
 
     
@@ -107,7 +107,7 @@ class LinearRegression_Multi(Model):
         model_grads["w"] = np.broadcast_to(
             array=np.expand_dims(X, axis=len(X.shape)),
             shape=X.shape+(num_classes,)
-        )
+        ) # a view.
         return model_grads
     
     
