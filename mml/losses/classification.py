@@ -11,7 +11,7 @@ from mml.utils.linalg import onehot
 class Zero_One(Loss):
     
     def __init__(self, name=None):
-        super(Zero_One, self).__init__(name=name)
+        super().__init__(name=name)
         return None
 
     

@@ -35,8 +35,7 @@ class LinearRegression(Model):
                                          size=self.shapes["w"])
         
         ## Main construction.
-        super(LinearRegression, self).__init__(paras_init=paras_init,
-                                               name=name)
+        super().__init__(paras_init=paras_init, name=name)
         return None
     
     
@@ -80,8 +79,7 @@ class LinearRegression_Multi(Model):
                                          size=self.shapes["w"])
 
         ## Main construction.
-        super(LinearRegression_Multi, self).__init__(paras_init=paras_init,
-                                                     name=name)
+        super().__init__(paras_init=paras_init, name=name)
         return None
 
     

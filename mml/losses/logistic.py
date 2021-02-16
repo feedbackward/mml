@@ -18,7 +18,7 @@ class Logistic(Loss):
     '''
     
     def __init__(self, name=None):
-        super(Logistic, self).__init__(name=name)
+        super().__init__(name=name)
         return None
 
     

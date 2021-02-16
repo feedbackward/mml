@@ -15,9 +15,7 @@ class LineSearch(Algorithm):
     '''
 
     def __init__(self, model=None, loss=None, name=None):
-        super(LineSearch, self).__init__(model=model,
-                                         loss=loss,
-                                         name=name)
+        super().__init__(model=model, loss=loss, name=name)
         return None
 
     

@@ -10,7 +10,7 @@ from mml.losses import Loss
 class Quadratic(Loss):
     
     def __init__(self, name=None):
-        super(Quadratic, self).__init__(name=name)
+        super().__init__(name=name)
         return None
 
     

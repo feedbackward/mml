@@ -20,7 +20,7 @@ class CVaR(Loss):
     
     def __init__(self, loss_base, quantile, name=None):
         loss_name = "CVaR x {}".format(str(base_loss))
-        super(CVaR, self).__init__(name=loss_name)
+        super().__init__(name=loss_name)
         self.loss = loss_base
         self.quantile = quantile
         return None
