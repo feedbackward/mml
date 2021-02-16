@@ -15,7 +15,7 @@ class Algorithm:
 
     def __init__(self, model=None, loss=None, name=None):
         self.model = model
-        self.w = model.w
+        self.paras = model.paras
         self.loss = loss
         if name is None:
             self.name = self.__class__.__name__

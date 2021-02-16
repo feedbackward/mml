@@ -11,14 +11,16 @@ class GD_ERM(LineSearch):
     '''
     Empirical risk minimization implemented
     by traditional gradient descent, using a
-    fixed step size.
+    fixed step size for all parameters.
     '''
 
     def __init__(self, step_coef=None, model=None, loss=None, name=None):
         super(GD_ERM, self).__init__(model=model,
                                      loss=loss,
                                      name=name)
-        self.step_coef = step_coef
+        self.step_coef = {}
+        for pname, p in self.paras.items():
+            self.step_coef[pname] = step_coef
         return None
 
     
