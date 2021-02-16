@@ -8,30 +8,44 @@ class Model:
     '''
     Model objects represent collections of parametrized
     functions. Each function takes some "inputs" (denoted X),
-    and is determined by a "parameter" (denoted w).
-    This parameter is the "state" of the Model object, and
-    it represents a particular choice of candidate from the
+    and is determined by a dictionary of "parameters" (denoted paras).
+    These parameters are the "state" of the Model object, and
+    represent a particular choice of candidate from the
     hypothesis class implicitly represented by the Model object.
 
-    Handy reference for getters/setters:
+    Handy references (property, getter/setter):
+    https://docs.python.org/3/library/functions.html#property
     https://stackoverflow.com/a/15930977
     '''
     
-    def __init__(self, w_init=None, name=None):
-        self._w = w_init
+    def __init__(self, paras_init=None, name=None):
+        self._paras = paras_init
         if name is None:
             self.name = self.__class__.__name__
         else:
             self.name = name
         return None
 
+    
     @property
-    def w(self):
-        return self._w
+    def paras(self):
+        '''
+        Get the current parameter dict.
+        '''
+        return self._paras
 
-    @w.setter
-    def w(self, w_new):
-        self._w = w_new
+    
+    @paras.setter
+    def paras(self, paras_new):
+        '''
+        Set new parameters.
+        Can do the entire dictionary all at once,
+        or one can do it one element at a time,
+        e.g., something like
+        >> model.paras["key"] = value
+        can be done.
+        '''
+        self._paras = paras_new
     
     
     def __str__(self):

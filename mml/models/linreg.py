@@ -5,6 +5,7 @@ import numpy as np
 
 ## Internal modules.
 from mml.models import Model, init_range
+from mml.utils import para_shape_check
 
 
 ###############################################################################
@@ -17,35 +18,31 @@ class LinearRegression(Model):
     '''
     
     def __init__(self, num_features,
-                 w_init=None, rg=None,
+                 paras_init=None, rg=None,
                  name="Linear regression"):
         
         ## Shape specification.
-        self.shape = (num_features, 1)
-
-        if w_init is not None:
-
-            ## Shape check.
-            if w_init.shape == self.shape:
-                _w_init = w_init
-            else:
-                raise ValueError("w_init has the wrong size.")
-
+        self.shapes = {"w": (num_features, 1)}
+        
+        if paras_init is not None:
+            ## If passed initial values, run a shape check.
+            para_shape_check(paras=paras_init, shapes=self.shapes)
         else:
-            
             ## If no initial value provided, generate one.
-            _w_init = rg.uniform(low=-init_range,
-                                 high=init_range,
-                                 size=self.shape)
-            
-        super(LinearRegression, self).__init__(w_init=_w_init,
+            paras_init = {}
+            paras_init["w"] = rg.uniform(low=-init_range,
+                                         high=init_range,
+                                         size=self.shapes["w"])
+        
+        ## Main construction.
+        super(LinearRegression, self).__init__(paras_init=paras_init,
                                                name=name)
         return None
     
     
     def func(self, w=None, X=None):
         if w is None:
-            return np.matmul(X,self._w)
+            return np.matmul(X,self.paras["w"])
         else:
             return np.matmul(X,w)
     
@@ -56,7 +53,7 @@ class LinearRegression(Model):
     
     def hess(self, w=None, X=None):
         n, d = X.shape
-        return np.zeros((d,d,n), dtype=w.dtype)
+        return np.zeros((d,d,n), dtype=self.paras["w"].dtype)
 
 
 class LinearRegression_Multi(Model):
@@ -66,28 +63,24 @@ class LinearRegression_Multi(Model):
     '''
     
     def __init__(self, num_features, num_outputs,
-                 w_init=None, rg=None,
+                 paras_init=None, rg=None,
                  name="Multi-output linear regression"):
         
         ## Shape specification.
-        self.shape = (num_features, num_outputs)
+        self.shapes = {"w": (num_features, num_outputs)}
 
-        if w_init is not None:
-            
-            ## Shape check.
-            if w_init.shape == self.shape:
-                _w_init = w_init
-            else:
-                raise ValueError("w_init has the wrong size.")
-
+        if paras_init is not None:
+            ## If passed initial values, run a shape check.
+            para_shape_check(paras=paras_init, shapes=self.shapes)
         else:
-            
             ## If no initial value provided, generate one.
-            _w_init = rg.uniform(low=-init_range,
-                                 high=init_range,
-                                 size=self.shape)
-            
-        super(LinearRegression_Multi, self).__init__(w_init=_w_init,
+            paras_init = {}
+            paras_init["w"] = rg.uniform(low=-init_range,
+                                         high=init_range,
+                                         size=self.shapes["w"])
+
+        ## Main construction.
+        super(LinearRegression_Multi, self).__init__(paras_init=paras_init,
                                                      name=name)
         return None
 
@@ -97,7 +90,7 @@ class LinearRegression_Multi(Model):
         Multi-valued output; shape (n, num_outputs).
         '''
         if w is None:
-            return np.matmul(X,self._w)
+            return np.matmul(X,self.paras["w"])
         else:
             return np.matmul(X,w)
     
@@ -106,7 +99,7 @@ class LinearRegression_Multi(Model):
         '''
         Returns the Jacobian; shape (n, num_features, num_outputs).
         '''
-        num_classes = self._w.shape[1] if w is None else w.shape[1]
+        num_classes = self.paras["w"].shape[1] if w is None else w.shape[1]
         return np.broadcast_to(
             array=np.expand_dims(X, axis=len(X.shape)),
             shape=X.shape+(num_classes,)
