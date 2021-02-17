@@ -32,7 +32,7 @@ class CVaR(Loss):
     def func(self, model, X, y):
         '''
         '''
-        v = model.paras["v"]
+        v = model.paras["v"].item()
         return v + (1./self.alpha) * np.clip(
             a=self.loss(model=model, X=X, y=y)-v,
             a_min=0.0,
@@ -46,7 +46,7 @@ class CVaR(Loss):
 
         ## Initial computations.
         loss_grads = self.loss.grad(model=model, X=X, y=y)
-        v = model.paras["v"]
+        v = model.paras["v"].item()
         l_check = np.clip(a=np.sign(self.loss(model=model, X=X, y=y)-v),
                           a_min=0.0,
                           a_max=None)
