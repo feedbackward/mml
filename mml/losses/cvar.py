@@ -22,7 +22,7 @@ class CVaR(Loss):
     '''
     
     def __init__(self, loss_base, alpha, name=None):
-        loss_name = "CVaR x {}".format(str(base_loss))
+        loss_name = "CVaR x {}".format(str(loss_base))
         super().__init__(name=loss_name)
         self.loss = loss_base
         self.alpha = alpha
@@ -46,7 +46,8 @@ class CVaR(Loss):
 
         ## Initial computations.
         loss_grads = self.loss.grad(model=model, X=X, y=y)
-        v = model.paras["v"].item()
+        v = model.paras["v"].item() # extract scalar.
+        vdim = model.paras["v"].ndim
         l_check = np.clip(a=np.sign(self.loss(model=model, X=X, y=y)-v),
                           a_min=0.0,
                           a_max=None)
@@ -70,7 +71,10 @@ class CVaR(Loss):
                 g *= l_check / self.alpha
         
         ## Finally, sub-gradient with respect to CVaR shift parameter.
-        loss_grads["v"] = np.where(l_check>0.0, 1.0-1.0/self.alpha, 1.0)
+        loss_grads["v"] = np.expand_dims(
+            a=np.where(l_check>0.0, 1.0-1.0/self.alpha, 1.0),
+            axis=tuple(i for i in range(ldim,1+vdim))
+        )
         
         ## Return gradients for all parameters being optimized.
         return loss_grads
