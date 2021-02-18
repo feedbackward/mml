@@ -1,4 +1,4 @@
-'''Setup folder for mml software.'''
+'''Setup file for this module.'''
 
 ## External modules.
 from setuptools import setup, find_packages
