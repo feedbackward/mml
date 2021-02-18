@@ -7,26 +7,25 @@ import numpy as np
 ###############################################################################
 
 
-def pwd(A, B):
+def pwd(A, B, norm=np.linalg.norm):
     '''
-    Compute pairwise distances in l2 norm.
-    Assumes that A (n,d) and B (m,d) are
-    arrays of d-dimensional observations.
+    Compute pairwise distances in any norm
+    between the "rows" of arrays A and B,
+    where each row is the sub-array associated
+    with each index in the first axis.
     
-    Returns an array of (n,m) shape filled
-    with pairwise distances. 
-    This is clearly correct but slow, just
-    for confirming that pwd_fast (below) is
-    indeed correctly implemented.
-    '''
-    
-    n, m = (A.shape[0], B.shape[0])
-    out = np.zeros((n,m), dtype=A.dtype)
+    Returns an array of (len(A),len(B)) shape,
+    populated with pairwise distances.
 
+    For the *special case* of the l2 norm,
+    we can see that pwd_fast (implemented below)
+    is much faster; this fn is a good sanity checker.
+    '''
+    n, m = (len(A),len(B))
+    out = np.zeros((n,m), dtype=A.dtype)
     for i in range(n):
         for j in range(m):
-            out[i,j] = np.linalg.norm(A[i,:]-B[j,:])
-
+            out[i,j] = norm(A[i,...]-B[j,...])
     return out
 
 
@@ -36,16 +35,22 @@ def pwd_fast(A, B):
     the row vectors of two matrices, except using a nice
     speed-up available when using the l2 norm.
     References:
-    Alex Smola's blog post "In praise of the Second Binomial Formula".
-    Also:
-    https://www.r-bloggers.com/pairwise-distances-in-r/
+    - Alex Smola's blog post "In praise of the Second Binomial Formula".
+    - Also, see https://www.r-bloggers.com/pairwise-distances-in-r/.
     '''
-    
-    n, m = (A.shape[0], B.shape[0])
+    n, m = (len(A),len(B))
+    A_flatrows = A.reshape((n,-1))
+    B_flatrows = B.reshape((m,-1))
+    A_dim = A_flatrows.shape[1]
+    B_dim = B_flatrows.shape[1]
+    if A_dim != B_dim:
+        raise RuntimeError(
+            "A dim ({}) != B dim ({}).".format(A_dim,B_dim)
+        )
     out = np.zeros((n,m), dtype=A.dtype)
-    out += (A**2).sum(axis=1, keepdims=True) # adds to one COL at a time.
-    out += (B**2).sum(axis=1, keepdims=True).T # adds to one ROW at a time.
-    out -= 2 * A.dot(B.T)
+    out += (A_flatrows**2).sum(axis=1,keepdims=True) # add one COL at a time.
+    out += (B_flatrows**2).sum(axis=1,keepdims=True).T # add one ROW at a time.
+    out -= 2 * A_flatrows.dot(B_flatrows.T)
     
     # Correct for computational error:
     # pwd_Mtx is formally non-negative (all elements), but
