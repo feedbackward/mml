@@ -50,6 +50,11 @@ Here we give an overview of the main contents of this repository. We do not list
 
 - `algos/`: algorithm class definitions.
 
+  - `gd.py`: traditional gradient descent.
+  - `__init__.py`: algorithm base class definitions.
+  - `linesearch.py`: base class for line search algorithms.
+  - `rgd.py`: robust gradient descent.
+
 - `config.py`: main configuration file.
 
 - `data/`: all the sub-directories of `data` correspond to one and only one dataset. Each includes scripts for acquiring raw data and converting the raw data into a standardized HDF5 format.
@@ -69,14 +74,25 @@ Here we give an overview of the main contents of this repository. We do not list
 
 - `losses/`: loss class definitions.
 
+  - `absolute.py`: absolute difference.
+  - `classification.py`: penalties for classifiers (zero-one etc.).
+  - `cvar.py`: CVaR loss wrapper.
+  - `__init__.py`: base loss class definitions.
+  - `logistic.py`: logistic loss (arbitrary number of classes).
+  - `quadratic.py`: squared error.
+  
+
 - `models/`: model class definitions.
+
+  - `__init__.py`: base model class definitions.
+  - `linreg.py`: linear regressors (both single and multiple output).
 
 - `utils/`
 
   - `__init__.py`: houses a variety of helper functions, mostly of a clerical nature.
-  - `linalg.py`: almost all helper functions related to array manipulation.
+  - `linalg.py`: helper functions related to array manipulation.
   - `mest.py`: various helper functions related to M-estimation.
-  - `rgen.py`: random data generation based on `Generator` objects supported by Numpy 1.17 and onward.
+  - `rgen.py`: random data generation based on modern `numpy.random.Generator` objects.
   - `vecmean.py`: a collection of vector mean estimation routines.
 
 
