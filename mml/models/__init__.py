@@ -4,6 +4,13 @@
 ###############################################################################
 
 
+## For reference:
+## Throughout this library, we work with the tacit assumption
+## that the "parameters" (i.e., values of "paras" dicts) are
+## such that paras[key].ndim >= 2, even if they are in essence
+## just a single scalar rather than a vector/mtx/array.
+
+
 class Model:
     '''
     Model objects represent collections of parametrized

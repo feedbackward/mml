@@ -10,12 +10,17 @@ from mml.utils.linalg import pwd_fast
 ###############################################################################
 
 
+## For reference:
+## All routines here take arrays (denoted A) assumed to be
+## of shape (n,...), and returns an array of shape (...).
+
+
 def smallball(A):
     '''
     High-dimensional median via pairwise distances, returning the
     point which is contains over half the other points in the smallest
     possible ball. Ref: Hsu and Sabato (2016).
-    Array A is of shape (k,...), taken as k vectors of interest.
+    Array A is of shape (n,...), taken as n vectors of interest.
     Returns an array of shape (...).
     '''
     idx_argmin = np.argmin(np.median(pwd_fast(A=A,B=A), axis=0))
@@ -52,11 +57,11 @@ def _row_norms(A):
 def _get_diffs_recip(u, A, row_norms=_row_norms):
     '''
     Safely computes the *reciprocal* of the distance between
-    the vector u (shape (1,...)) and each row of A (shape (k,...)),
+    the vector u (shape (1,...)) and each row of A (shape (n,...)),
     noting that each row has a shape of (...).
     When the difference is very close to zero, then instead of 1/0,
     it returns 0, since we desire a zero-valued weight for such a pair.
-    Returns array of shape (k,1).
+    Returns array of shape (n,1).
     '''
 
     ## Fix the shape of the output.
