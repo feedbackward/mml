@@ -64,7 +64,7 @@ class CVaR(Loss):
             elif ldim < gdim:
                 l_check_exp = np.expand_dims(
                     a=l_check,
-                    axis=tuple(i for i in range(ldim,gdim))
+                    axis=tuple(range(ldim,gdim))
                 )
                 g *= l_check_exp / self.alpha
             else:
@@ -73,7 +73,7 @@ class CVaR(Loss):
         ## Finally, sub-gradient with respect to CVaR shift parameter.
         loss_grads["v"] = np.expand_dims(
             a=np.where(l_check>0.0, 1.0-1.0/self.alpha, 1.0),
-            axis=tuple(i for i in range(ldim,1+vdim))
+            axis=tuple(range(ldim,1+vdim))
         )
         
         ## Return gradients for all parameters being optimized.

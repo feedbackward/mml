@@ -29,8 +29,8 @@ class Quadratic(Loss):
     def grad(self, model, X, y):
         '''
         '''
-        loss_grads = deepcopy(model.grad(X=X))
-        diffs = model(X=X)-y
+        loss_grads = deepcopy(model.grad(X=X)) # start with model grads.
+        diffs = model(X=X)-y # then loss grads (non-composite).
 
         ## Shape check to be safe.
         if diffs.ndim != 2:
@@ -40,7 +40,7 @@ class Quadratic(Loss):
         else:
             for pn, g in loss_grads.items():
                 g *= np.expand_dims(a=diffs,
-                                    axis=tuple(i for i in range(2,g.ndim)))
+                                    axis=tuple(range(2,g.ndim)))
         return loss_grads
 
 
