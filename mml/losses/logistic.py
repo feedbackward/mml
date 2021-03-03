@@ -35,7 +35,7 @@ class Logistic(Loss):
         
         ## Further computations.
         maxes = A_raw.max(axis=1,keepdims=True) # use to avoid overflow.
-        loss += np.log(np.exp(A_raw-maxes).sum(axis=1,keepdims=True)+maxes)
+        loss += np.log(np.exp(A_raw-maxes).sum(axis=1,keepdims=True))+maxes
         return loss
 
 
