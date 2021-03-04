@@ -11,6 +11,20 @@
 ## just a single scalar rather than a vector/mtx/array.
 
 
+## Default general-purpose random parameter initialization function(s).
+
+init_range = 0.05
+def random_init(shape, rg, range_low=-init_range, range_high=init_range):
+    '''
+    A simple initial randomizer using uniformly generated values.
+    '''
+    return rg.uniform(low=range_low,
+                      high=range_high,
+                      size=shape)
+
+
+## Definition of base model class.
+
 class Model:
     '''
     Model objects represent collections of parametrized
@@ -94,10 +108,6 @@ class Model:
         (implemented in child classes)
         '''
         raise NotImplementedError
-
-
-## Range for default (random) parameter initialization.
-init_range = 0.05
 
 
 ###############################################################################

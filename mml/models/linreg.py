@@ -4,7 +4,7 @@
 import numpy as np
 
 ## Internal modules.
-from mml.models import Model, init_range
+from mml.models import Model, random_init
 from mml.utils import para_shape_check
 
 
@@ -30,9 +30,7 @@ class LinearRegression(Model):
         else:
             ## If no initial value provided, generate one.
             paras_init = {}
-            paras_init["w"] = rg.uniform(low=-init_range,
-                                         high=init_range,
-                                         size=self.shapes["w"])
+            paras_init["w"] = random_init(shape=self.shapes["w"], rg=rg)
         
         ## Main construction.
         super().__init__(paras_init=paras_init, name=name)
@@ -81,9 +79,7 @@ class LinearRegression_Multi(Model):
         else:
             ## If no initial value provided, generate one.
             paras_init = {}
-            paras_init["w"] = rg.uniform(low=-init_range,
-                                         high=init_range,
-                                         size=self.shapes["w"])
+            paras_init["w"] = random_init(shape=self.shapes["w"], rg=rg)
 
         ## Main construction.
         super().__init__(paras_init=paras_init, name=name)
