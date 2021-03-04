@@ -209,12 +209,11 @@ def est_scale_chi_fixedpt(X, chi_fn, thres=1e-03, iters=50):
     s_new = np.std(X, axis=0, keepdims=True)
     idx_bad = s_new <= 0.0
     s_new[idx_bad] = 1.0 # Just fix to keep stable.
-    s_old = None
     diff = 1.0
     for t in range(iters):
         s_old = np.copy(s_new)
         s_new = np.mean(chi_fn(u=(X/s_old)), axis=0, keepdims=True)
-        s_new = np.sqrt(1+s_new/beta)
+        s_new = np.sqrt(1+np.clip(s_new/beta, a_min=-1.0, a_max=None))
         s_new *= s_old
         s_new[s_new <= 1e-12] = _chi_min # in case of being too small.
         if np.all(np.abs(s_new-s_old) <= thres):
