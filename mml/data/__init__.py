@@ -14,7 +14,9 @@ from mml.utils.linalg import onehot
 
 ## Main data dictionary.
 ## Notes:
-## - "chance_level", when not None, is the fraction of the majority class.
+## - type: the type of learning problem the data is to be used for.
+## - num_classes 
+## - chance_level: when not None, this is #(majority class)/#(all classes).
 
 dataset_dict = {
     "adult": {"type": "classification",
@@ -78,6 +80,10 @@ dataset_dict = {
 }
 
 
+## List of dataset types that we allow.
+allowed_types = ["classification", "regression"]
+
+
 ## Set default values for the fraction of data for training/validation.
 _n_train_frac = 0.8 # fraction to be used for training.
 _n_val_frac = 0.1*_n_train_frac # fraction to be used for validation.
@@ -118,14 +124,18 @@ def get_data_general(dataset, paras, rg, directory):
     else:
         n_all = len(X)
         idx_shuffled = rg.permutation(n_all)
-    
-    ## If specified, turn y into a one-hot format.
-    try:
-        if paras["type"] == "classification":
-            y = onehot(y=y, num_classes=paras["num_classes"])
-    except KeyError:
-        raise ValueError("Must define dataset/task type in paras.")
 
+    ## Type-specific checks and modifications.
+    if "type" in paras:
+        if paras["type"] in allowed_types:
+            if paras["type"] == "classification":
+                ## All classification tasks default to one-hot labels.
+                y = onehot(y=y, num_classes=paras["num_classes"])
+        else:
+            raise ValueError("Dataset type is not an allowed type.")
+    else:
+        raise ValueError("All datasets must have a type parameter.")
+    
     ## Do the actual shuffling.
     X = X[idx_shuffled,:]
     y = y[idx_shuffled,:]
