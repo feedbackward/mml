@@ -71,8 +71,10 @@ def onehot(y, num_classes):
     to flatten and get a view as often as possible.
     (Ref: numpy.ravel documentation)
     '''
-    return np.eye(num_classes, dtype=y.dtype)[y.reshape(-1)]
-
+    if y is None:
+        return y
+    else:
+        return np.eye(num_classes, dtype=y.dtype)[y.reshape(-1)]
 
 
 ###############################################################################

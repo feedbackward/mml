@@ -81,10 +81,12 @@ dataset_dict = {
 
 
 ## List of dataset types that we allow.
+
 allowed_types = ["classification", "regression"]
 
 
 ## Set default values for the fraction of data for training/validation.
+
 _n_train_frac = 0.8 # fraction to be used for training.
 _n_val_frac = 0.1*_n_train_frac # fraction to be used for validation.
 for key in dataset_dict.keys():
@@ -93,91 +95,126 @@ for key in dataset_dict.keys():
 
 
 ## An alphabetically-sorted list of names whenever needed.
+
 dataset_list = sorted([data for data in dataset_dict.keys()])
 
 
-## A general-purpose data-preparation function.
+## Default numpy dtypes to use.
 
-def get_data_general(dataset, paras, rg, directory):
+dtype_X = np.float32
+dtype_y = np.int64
+
+
+## General-purpose data-preparation functions.
+
+def get_data(dataset, paras, rg, directory):
+
+    ## File to read from.
+    toread = os.path.join(directory, dataset,
+                          "{}.h5".format(dataset))
+
+    ## Open the file, convert to default dtypes and do basic checks.
+    with open_file(toread, mode="r") as f:
+        
+        print(f)
+        node_list = f.list_nodes(where=f.root)
+
+        ## Assume that all datasets include at least an "X" node.
+        X = f.get_node(where=f.root, name="X").read().astype(dtype_X)
+        print("Type: X ({})".format(type(X)))
+
+        ## In addition, there can be at most one more node, called "y".
+        if len(node_list) == 1:
+            y = None
+        elif len(node_list) == 2:
+            y = f.get_node(where=f.root, name="y").read().astype(dtype_y)
+            print("Type: y ({})".format(type(y)))
+            if len(X) != len(y):
+                raise ValueError(
+                    "len(X) {} != len(y) {}".format(len(X),len(y))
+                )
+        else:
+            raise ValueError("Dataset has more than two child nodes in root.")
+
+    return (X,y)
+
+
+def get_data_general(dataset, paras, rg, directory, do_normalize=True,
+                     do_shuffle=True, do_onehot=True):
     '''
+    Get dataset and split into training, testing, and validation subsets.
+    
     This function assumes that "dataset" is either included in
     the dataset_dict defined here in mml.data, or that the
     accompanying "paras" argument is formatted in the same way
     as the entries in dataset_dict.
     '''
 
-    ## Read the specified data and convert into useful dtypes.
-    toread = os.path.join(directory, dataset,
-                          "{}.h5".format(dataset))
-    with open_file(toread, mode="r") as f:
-        print(f)
-        X = f.get_node(where="/", name="X").read().astype(np.float32)
-        y = f.get_node(where="/", name="y").read().astype(np.int64)
-        print("Types: X ({}), y ({}).".format(type(X), type(y)))
+    ## First get the data in ndarray form and run basic checks.
+    X, y = get_data(dataset=dataset, paras=paras, rg=rg, directory=directory)
     
-    ## If sample sizes are correct, then get an index for shuffling.
+    ## Collect key shape information.
     n_X, num_features = X.shape
-    n_y, num_labels = y.shape
-    if n_X != n_y:
-        s_err = "len(X) != len(y) ({} != {})".format(n_X,n_y)
-        raise ValueError("Dataset sizes wrong. "+s_err)
-    else:
-        n_all = len(X)
+    n_y, num_labels = y.shape if y is not None else (None,None)
+    n_all = n_X
+    paras.update({"num_features": num_features,
+                  "num_labels": num_labels})
+    
+    ## Carry out shuffling if prescribed.
+    if do_shuffle:
         idx_shuffled = rg.permutation(n_all)
+        X = X[idx_shuffled,:]
+        y = y[idx_shuffled,:] if y is not None else None
 
     ## Type-specific checks and modifications.
     if "type" in paras:
         if paras["type"] in allowed_types:
-            if paras["type"] == "classification":
-                ## All classification tasks default to one-hot labels.
+            if paras["type"] == "classification" and do_onehot:
+                ## Do one-hot labels for classification if prescribed.
                 y = onehot(y=y, num_classes=paras["num_classes"])
         else:
             raise ValueError("Dataset type is not an allowed type.")
     else:
         raise ValueError("All datasets must have a type parameter.")
-    
-    ## Do the actual shuffling.
-    X = X[idx_shuffled,:]
-    y = y[idx_shuffled,:]
-    
-    ## Normalize the inputs in a per-feature manner.
-    maxvec = X.max(axis=0,keepdims=True)
-    minvec = X.min(axis=0,keepdims=True)
-    X = X-minvec
-    with np.errstate(divide="ignore", invalid="ignore"):
-        X = X / (maxvec-minvec)
-        X[X == np.inf] = 0
-        X = np.nan_to_num(X)
-    del maxvec, minvec
+
+    ## Normalize the inputs in a per-feature manner, if prescribed.
+    if do_normalize:
+        maxvec = X.max(axis=0,keepdims=True)
+        minvec = X.min(axis=0,keepdims=True)
+        X = X-minvec
+        with np.errstate(divide="ignore", invalid="ignore"):
+            X = X / (maxvec-minvec)
+            X[X == np.inf] = 0
+            X = np.nan_to_num(X)
+        del maxvec, minvec
 
     ## Get split sizes (training, validation, testing).
-    print("Shapes:")
-    print("n_all =", n_all,
-          "num_features =", num_features,
-          "num_labels =", num_labels)
-    n_train = int(n_all*paras["n_train_frac"])
-    n_val = int(n_all*paras["n_val_frac"])
-    n_test = n_all-n_train-n_val
-    print("Subset sizes:")
-    print("n_train =", n_train,
-          "n_val =", n_val,
-          "n_test =", n_test)
+    if "n_train_frac" in paras and "n_val_frac" in paras:
+        print("--Shapes--")
+        print("n_all:", n_all,
+              "num_features:", num_features,
+              "num_labels:", num_labels)
+        n_train = int(n_all*paras["n_train_frac"])
+        n_val = int(n_all*paras["n_val_frac"])
+        n_test = n_all-n_train-n_val
+        print("--Subset sizes--")
+        print("n_train:", n_train,
+              "n_val:", n_val,
+              "n_test:", n_test)
+    else:
+        raise ValueError("Dataset paras must include subset fractions.")
     
-    ## Learning task specific parameter additions.
-    paras.update({"num_features": num_features,
-                  "num_labels": num_labels})
-
     ## Do train/test split, with validation data if specified.
     X_train = X[0:n_train,:]
-    y_train = y[0:n_train,:]
+    y_train = y[0:n_train,:] if y is not None else None
     if n_val > 0:
         X_val = X[n_train:(n_train+n_val),:]
-        y_val = y[n_train:(n_train+n_val),:]
+        y_val = y[n_train:(n_train+n_val),:] if y is not None else None
     else:
         X_val = None
         y_val = None
     X_test = X[(n_train+n_val):,:]
-    y_test = y[(n_train+n_val):,:]
+    y_test = y[(n_train+n_val):,:] if y is not None else None
 
     ## For reference, print the data types.
     print("Data types:")
