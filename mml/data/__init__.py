@@ -36,7 +36,7 @@ dataset_dict = {
     
     "cifar100": {"type": "classification",
                  "num_classes": 100,
-                 "chance_level": 0.1,
+                 "chance_level": None,
                  "pix_h": 32,
                  "pix_w": 32,
                  "channels": 3},
