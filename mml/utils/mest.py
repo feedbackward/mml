@@ -175,6 +175,9 @@ def est_loc_fixedpt(X, s, inf_fn, thres=1e-03, iters=50):
     M-estimate of location, using a generic influence function.
     Assumes X is (k,d), with k the number of observations.
     Assumes s is either a scalar or (1,d) shaped.
+    
+    Reference:
+    Holland and Ikeda (2017), eqn. (3) and Prop. 17.
     '''
     new_theta = X.mean(axis=0, keepdims=True) # initialization.
     old_theta = None
@@ -202,6 +205,9 @@ def est_scale_chi_fixedpt(X, chi_fn, thres=1e-03, iters=50):
     estimation using chi function M-estimators, which uses
     a fixed-point update.
     Assumes X is (k,d), with k the number of observations.
+    
+    Reference:
+    Holland and Ikeda (2017), eqn. (4) and Prop. 17.
     '''
     
     # Initialize to sd, check for degeneracy.
