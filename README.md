@@ -97,7 +97,6 @@ Here we give an overview of the main contents of this repository, stored in the 
   - `cifar100/`: CIFAR-100 tiny images.
   - `cod_rna/`: RNA coding dataset.
   - `covtype/`: predicting forest cover type from cartographic variables.
-  - `data_list.txt`: a line-broken list of all the datasets we have prepared.
   - `emnist_balanced/`: balanced extended+modified NIST dataset.
   - `fashion_mnist/`: ten classes of clothing items in MNIST digit style.
   - `iris/`: Fisher's Iris data set.
