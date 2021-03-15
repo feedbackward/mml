@@ -4,8 +4,9 @@ This repository is a collection of general-purpose software that we (<a href="ht
 
 We call it "base" software since it plays a supporting role in our research projects. Functions and classes that are used frequently across different distinct projects will be implemented and maintained here, in contrast with project-specific repositories, which contain only the code that is very "local" to each project (see for example <a href="https://github.com/feedbackward/sgd-roboost">sgd-roboost</a> or <a href="https://github.com/feedbackward/robrisk">robrisk</a>).
 
-This README document is composed of the following content:
+This README file is composed of the following content:
 
+- <a href="#prereq">Prerequisites</a>
 - <a href="#start">Getting started: example of expected usage</a>
 - <a href="#data">Acquiring benchmark datasets</a>
 - <a href="#content_overview">Overview of repository contents</a>
