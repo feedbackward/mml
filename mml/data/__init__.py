@@ -1,4 +1,4 @@
-'''Clerical information associated with our datasets.'''
+'''Data: Meta-data and functions for going from HDF5 to ndarray.'''
 
 ## External modules.
 import numpy as np

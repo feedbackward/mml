@@ -90,6 +90,7 @@ Here we give an overview of the main contents of this repository, stored in the 
 
 - `data/`: all the sub-directories of `data` correspond to one and only one dataset. Each includes scripts for acquiring raw data and converting the raw data into a standardized HDF5 format.
 
+  - `__init__.py`: general-purpose functions for going from `.h5` to `ndarray`, plus all relevant "meta-data" for each dataset.
   - `adult/`: the adult census data set for predicting annual income.
   - `australian/`: Australian credit data.
   - `cifar10/`: CIFAR-10 tiny images.
