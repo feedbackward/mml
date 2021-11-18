@@ -99,8 +99,10 @@ Here we give an overview of the main contents of this repository, stored in the 
   - `covtype/`: predicting forest cover type from cartographic variables.
   - `emnist_balanced/`: balanced extended+modified NIST dataset.
   - `fashion_mnist/`: ten classes of clothing items in MNIST digit style.
+  - `hills/`: Scottish hill data set (from <a href="https://CRAN.R-project.org/package=MASS">MASS</a>).
   - `iris/`: Fisher's Iris data set.
   - `mnist/`: MNIST handwritten digits.
+  - `phones/`: Belgian phone call dataset (from <a href="https://CRAN.R-project.org/package=MASS">MASS</a>).
   - `protein/`: protein homology dataset.
 
 - `losses/`: loss class definitions.
