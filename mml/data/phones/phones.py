@@ -73,8 +73,6 @@ def raw_to_h5():
         idx = 0
         for linenum, line in enumerate(f_reader):
 
-            print("DBDB line", line)
-            
             if linenum == 0:
                 continue # skip the first row.
             
