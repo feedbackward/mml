@@ -66,7 +66,7 @@ def parse_line(x, y):
         attribute = attribute_names[j]
         num_distinct = len(attribute_dict[attribute])
 
-        if num_dictinct > 1:
+        if num_distinct > 1:
             idx_hot = attribute_dict[attribute].index(value)
             onehot = np.zeros(num_distinct, dtype=dtype_X)
             onehot[idx_hot] = 1.0
