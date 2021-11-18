@@ -23,7 +23,7 @@ def get_toread_tr(num):
                         data_name, "data_batch_{}.bin".format(num+1))
 
 toread_te = os.path.join(dir_data_toread,
-                          data_name, "test_batch.bin")
+                         data_name, "test_batch.bin")
 newdir = os.path.join(dir_data_towrite, data_name)
 towrite = os.path.join(newdir, "cifar10.h5")
 

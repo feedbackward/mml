@@ -73,6 +73,8 @@ dataset_dict = {
               "pix_h": 28,
               "pix_w": 28,
               "channels": 1},
+
+    "phones": {"type": "regression"},
     
     "protein": {"type": "classification",
                 "num_classes": 2,
@@ -102,7 +104,6 @@ dataset_list = sorted([data for data in dataset_dict.keys()])
 ## Default numpy dtypes to use.
 
 dtype_X = np.float32
-dtype_y = np.int64
 
 
 ## General-purpose data-preparation functions.
@@ -127,6 +128,13 @@ def get_data(dataset, paras, rg, directory):
         if len(node_list) == 1:
             y = None
         elif len(node_list) == 2:
+            if paras["type"] == "classification":
+                dtype_y = np.int64
+            elif paras["type"] == "regression":
+                dtype_y = np.float32
+            else:
+                raise ValueError("Unknown dataset type given.")
+                
             y = f.get_node(where=f.root, name="y").read().astype(dtype_y)
             print("Type: y ({})".format(type(y)))
             if len(X) != len(y):
