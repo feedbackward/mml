@@ -46,7 +46,7 @@ atom_y = tables.Float32Atom()
 def parse_line(x, y):
 
     ## Both inputs and outputs are super easy to parse.
-    x_out = np.array(x, dtype=dtype_x)
+    x_out = np.array(x, dtype=dtype_X)
     y_out = np.array(y, dtype=dtype_y)
     return x_out, y_out
 
@@ -71,11 +71,13 @@ def raw_to_h5():
         
         ## Populate the placeholder numpy arrays.
         idx = 0
-        for line in f_reader:
+        for linenum, line in enumerate(f_reader):
 
-            if idx == 0:
+            print("DBDB line", line)
+            
+            if linenum == 0:
                 continue # skip the first row.
-
+            
             if len(line) == 0:
                 continue # do nothing for blank lines.
             
