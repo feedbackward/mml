@@ -62,6 +62,8 @@ dataset_dict = {
                       "pix_h": 28,
                       "pix_w": 28,
                       "channels": 1},
+
+    "hills": {"type": "regression"},
     
     "iris": {"type": "classification",
              "num_classes": 3,
