@@ -27,6 +27,9 @@ def para_shape_check(paras, shapes):
     if paras is None or shapes is None:
         raise ValueError("Both paras and shapes cannot be None.")
 
+    if not isinstance(paras, dict):
+        raise TypeError("Parameters must be stored in a dict.")
+
     for pn in shapes.keys():
         
         try:
