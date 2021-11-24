@@ -1,4 +1,4 @@
-'''Losses: logistic loss.'''
+'''Losses: CVaR loss.'''
 
 ## External modules.
 import numpy as np
