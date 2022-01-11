@@ -38,9 +38,9 @@ class Margin_Binary(Loss):
         elif S.shape[1] != y.shape[1]:
             raise ValueError("The shape of S and y do not match.")
         else:
-            L = S*y
             if self.hinge:
-                return np.where(L >= self.threshold, L, 0.0)
+                L = self.threshold - S*y
+                return np.clip(a=L, a_min=0.0, out=L)
             else:
                 return L
     
@@ -60,12 +60,12 @@ class Margin_Binary(Loss):
         elif S.shape[1] != y.shape[1]:
             raise ValueError("The shape of S and y do not match.")
         else:
-
+            
             ## First compute the relevant coefficients.
             if self.hinge:
-                coeffs = np.where(S*y >= self.threshold, y, 0.0)
+                coeffs = np.where(S*y <= self.threshold, -y, 0.0)
             else:
-                coeffs = y
+                coeffs = -y
             
             ## Change from (n, 1) to (n, 1, 1) for broadcasting.
             coeffs_exp = np.expand_dims(coeffs, axis=1)
