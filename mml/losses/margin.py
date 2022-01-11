@@ -38,11 +38,11 @@ class Margin_Binary(Loss):
         elif S.shape[1] != y.shape[1]:
             raise ValueError("The shape of S and y do not match.")
         else:
+            L = -S*y
             if self.hinge:
-                L = self.threshold - S*y
-                return np.clip(a=L, a_min=0.0, out=L)
-            else:
-                return L
+                L += self.threshold
+                np.clip(a=L, a_min=0.0, a_max=None, out=L)
+            return L
     
     
     def grad(self, model, X, y):
