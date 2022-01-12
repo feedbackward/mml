@@ -72,7 +72,7 @@ class DRO_CR(Loss):
         ## Finally, sub-gradient with respect to shift parameter.
         loss_grads["theta"] = np.expand_dims(
             a=1.0-l_check,
-            axis=tuple(range(ldim,1+vdim))
+            axis=tuple(range(ldim,1+tdim))
         )
         
         ## Return gradients for all parameters being optimized.
