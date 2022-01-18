@@ -92,7 +92,7 @@ allowed_types = ["classification", "regression"]
 ## Set default values for the fraction of data for training/validation.
 
 _n_train_frac = 0.8 # fraction to be used for training.
-_n_val_frac = 0.1*_n_train_frac # fraction to be used for validation.
+_n_val_frac = 0.1 # fraction to be used for validation.
 for key in dataset_dict.keys():
     dataset_dict[key]["n_train_frac"] = _n_train_frac
     dataset_dict[key]["n_val_frac"] = _n_val_frac
