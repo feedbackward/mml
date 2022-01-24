@@ -28,6 +28,14 @@ class CVaR(Loss):
         self.alpha = alpha
         return None
 
+
+    def base(self, model, X, y):
+        '''
+        Calls the base loss upon which this
+        modified loss is built.
+        '''
+        return self.loss(model=model, X=X, y=y)
+
     
     def func(self, model, X, y):
         '''

@@ -27,7 +27,15 @@ class DRO_CR(Loss):
         self.shape = shape
         self.bound = bound
         return None
-
+    
+    
+    def base(self, model, X, y):
+        '''
+        Calls the base loss upon which this
+        modified loss is built.
+        '''
+        return self.loss(model=model, X=X, y=y)
+    
     
     def func(self, model, X, y):
         '''
@@ -51,11 +59,8 @@ class DRO_CR(Loss):
         l_check *= cstar
         l_check *= np.clip(a=losses-theta, a_min=0.0, a_max=None)**(cstar-1.0)
         ldim = l_check.ndim
-
+        
         ## Main sub-gradient computations.
-        ## Note: since "theta" isn't part of model grad calcs,
-        ##       we never need to worry about "theta" getting
-        ##       mixed into the loop below.
         for pn, g in loss_grads.items():
             gdim = g.ndim
             if ldim > gdim:
