@@ -35,6 +35,26 @@ class DRO_CR(Loss):
         modified loss is built.
         '''
         return self.loss(model=model, X=X, y=y)
+
+
+    def orig(self, model, X, y):
+        '''
+        Computes the original DRO_CR objective,
+        in contrast with the modified loss that is
+        used in func() and grad(). This involves
+        averaging, so this function always returns
+        a scalar, not an array.
+        '''
+        theta = model.paras["theta"].item()
+        cstar = self.shape / (self.shape-1.0)
+        crecip = 1.0 / self.shape
+        scale = (1.0+self.shape*(self.shape-1.0)*self.bound)**crecip
+        return theta + scale * np.mean(
+            clip(
+                a=self.loss(model=model, X=X, y=y)-theta,
+                a_min=0.0, a_max=None
+            )**cstar
+        )**(1.0/cstar)
     
     
     def func(self, model, X, y):

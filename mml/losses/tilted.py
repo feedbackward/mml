@@ -33,6 +33,21 @@ class Tilted(Loss):
         '''
         return self.loss(model=model, X=X, y=y)
     
+
+    def orig(self, model, X, y):
+        '''
+        Computes the original Tilted objective,
+        in contrast with the modified loss that is
+        used in func() and grad(). This involves
+        averaging, so this function always returns
+        a scalar, not an array.
+        '''
+        return np.log(
+            np.mean(
+                np.exp(self.tilt*self.loss(model=model, X=X, y=y))
+            )
+        ) / self.tilt
+    
     
     def func(self, model, X, y):
         '''
