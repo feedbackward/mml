@@ -215,16 +215,16 @@ def get_data_general(dataset, paras, rg, directory, do_normalize=True,
         raise ValueError("Dataset paras must include subset fractions.")
     
     ## Do train/test split, with validation data if specified.
-    X_train = X[0:n_train,:]
-    y_train = y[0:n_train,:] if y is not None else None
+    X_train = np.copy(X[0:n_train,:])
+    y_train = np.copy(y[0:n_train,:]) if y is not None else None
     if n_val > 0:
-        X_val = X[n_train:(n_train+n_val),:]
-        y_val = y[n_train:(n_train+n_val),:] if y is not None else None
+        X_val = np.copy(X[n_train:(n_train+n_val),:])
+        y_val = np.copy(y[n_train:(n_train+n_val),:]) if y is not None else None
     else:
         X_val = None
         y_val = None
-    X_test = X[(n_train+n_val):,:]
-    y_test = y[(n_train+n_val):,:] if y is not None else None
+    X_test = np.copy(X[(n_train+n_val):,:])
+    y_test = np.copy(y[(n_train+n_val):,:]) if y is not None else None
 
     ## For reference, print the data types.
     print("Data types:")
@@ -235,7 +235,8 @@ def get_data_general(dataset, paras, rg, directory, do_normalize=True,
     print("X_test:", type(X_test),
           "y_test:", type(y_test))
     
-    ## Return all data, plus dataset parameters.
+    ## Scrap redundant data, and return the split data, plus dataset paras.
+    del X, y
     return (X_train, y_train, X_val, y_val, X_test, y_test, paras)
 
 
