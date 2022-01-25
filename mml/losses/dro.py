@@ -50,7 +50,7 @@ class DRO_CR(Loss):
         crecip = 1.0 / self.shape
         scale = (1.0+self.shape*(self.shape-1.0)*self.bound)**crecip
         return theta + scale * np.mean(
-            clip(
+            np.clip(
                 a=self.loss(model=model, X=X, y=y)-theta,
                 a_min=0.0, a_max=None
             )**cstar
