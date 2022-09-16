@@ -42,17 +42,28 @@ class Tilted(Loss):
         averaging, so this function always returns
         a scalar, not an array.
         '''
-        return np.log(
+        losses = self.loss(model=model, X=X, y=y)
+        if self.tilt >= 0.0:
+            loss_shift = np.max(losses)
+        else:
+            loss_shift = np.min(losses)
+        return (np.log(
             np.mean(
-                np.exp(self.tilt*self.loss(model=model, X=X, y=y))
+                np.exp(self.tilt*(losses-loss_shift))
             )
-        ) / self.tilt
+        ) + loss_shift) / self.tilt
     
     
     def func(self, model, X, y):
         '''
         '''
-        return np.exp(self.tilt*self.loss(model=model, X=X, y=y))
+        losses = self.loss(model=model, X=X, y=y)
+        if self.tilt >= 0.0:
+            loss_shift = np.max(losses)
+        else:
+            loss_shift = np.min(losses)
+        ## NOTE: the loss_shift is to prevent overflow.
+        return np.exp(self.tilt*(losses-loss_shift))
     
     
     def grad(self, model, X, y):
