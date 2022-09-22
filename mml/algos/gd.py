@@ -20,7 +20,7 @@ class GD_ERM(LineSearch):
         for pn, p in self.paras.items():
             self.step_coef[pn] = step_coef
         return None
-
+    
     
     def newdir(self, X=None, y=None):
         loss_grads = self.loss.grad(model=self.model, X=X, y=y)
@@ -35,6 +35,15 @@ class GD_ERM(LineSearch):
         Just return the pre-fixed step sizes.
         '''
         return self.step_coef
+
+
+    def start_epoch(self, X=None, y=None):
+        '''
+        A function to be used at the start of each epoch.
+        Meaningful implementations are to be done within
+        classes inheriting this one.
+        '''
+        return None
 
 
 ###############################################################################
